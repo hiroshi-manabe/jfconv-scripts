@@ -40,13 +40,8 @@ def decode(lm, words_list):
                 if new_state not in dict_list[pos + 1] or new_score > dict_list[pos + 1][new_state][0]:
                     dict_list[pos + 1][new_state] = (new_score, state, word)
 
-    best_score = -999999
-    best_state = kenlm.State()
-    last_dict = dict_list[len(words_list) - 1]
-    for state, (score, prev_state, word) in last_dict.items():
-        if score > best_score:
-            best_score = score
-            best_state = state
+    last_dict = dict_list[-1]
+    state = max(last_dict, key=lambda candidate: last_dict[candidate][0])
 
     ret = []
     for pos in range(len(words_list) - 1, -1, -1):
